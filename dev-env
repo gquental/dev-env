@@ -7,6 +7,8 @@ if [ -z "$XDG_CONFIG_HOME" ]; then
     XDG_CONFIG_HOME=$HOME/.config
 fi
 
+
+
 if [ -z "$DEV_ENV" ]; then
     echo "env var DEV_ENV needs to be present"
     exit 1
@@ -35,19 +37,22 @@ update_files() {
             directory=${2%/}/${c#./}
             log "    removing: rm -rf $directory"
 
+            log $(pwd)
             if [[ $dry_run == "0" ]]; then
                 rm -rf $directory
             fi
 
             log "    copying env: cp $c $2"
             if [[ $dry_run == "0" ]]; then
-                cp -r ./$c $2
+                cp -r $c $2
             fi
         done
 
     )
     popd &> /dev/null
+    IFS=$OLDIFS
 }
+
 
 copy() {
     log "removing: $2"
